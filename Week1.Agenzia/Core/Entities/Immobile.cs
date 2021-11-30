@@ -13,8 +13,8 @@ namespace Week1.Agenzia.Core.Entities
         public int CAP { get; set; }
         public string Citta { get; set; }
         public int SuperficieMQ { get; set; }
-        public bool Disponibilita { get; set; }
-        public TipologiaEnum Tipologia { get; set; }
+        public bool Disponibilita { get; set; } = true;
+        //public TipologiaEnum Tipologia { get; set; }
 
 
 
@@ -26,7 +26,7 @@ namespace Week1.Agenzia.Core.Entities
                 disp = "Si";
             else
                 disp = "No";
-            return $"Tipo di immobile: {Tipologia} - ID: {Id} - Indirizzo: {Indirizzo}, {CAP}, {Citta} - Metri quadri: {SuperficieMQ} - Disponibile: {disp}";
+            return $"ID: {Id} - Indirizzo: {Indirizzo}, {CAP}, {Citta} - Metri quadri: {SuperficieMQ} - Disponibile: {disp}";
         }
 
     }
