@@ -12,6 +12,7 @@ namespace Week1.VR.Mock.Repositories
     {
         public bool Add(Customer entity)
         {
+            
             throw new NotImplementedException();
         }
 
