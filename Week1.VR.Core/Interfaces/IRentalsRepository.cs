@@ -9,5 +9,13 @@ namespace Week1.VR.Core.Interfaces
 {
     public interface IRentalsRepository : IRepository<Rental>
     {
+        Rental GetById(int id);
+
+        List<Rental> GetByUser(string userId);
+
+        List<Rental> GetByVehicle(string vehicleId);
+
+        List<Rental> GetRentalsInProgress();
+
     }
 }

@@ -15,5 +15,9 @@ namespace Week1.VR.Core.Models
 
         //public List<Rental> CustomerRentals { get; set; } = new List<Rental>();
 
+        public override string ToString()
+        {
+            return $"Nome: {Name} {Surname} - Codice fiscale: {FiscalCode}";
+        }
     }
 }

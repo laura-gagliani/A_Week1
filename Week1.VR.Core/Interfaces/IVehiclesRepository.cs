@@ -9,5 +9,7 @@ namespace Week1.VR.Core.Interfaces
 {
     public interface IVehiclesRepository : IRepository<Vehicle>
     {
+        Vehicle GetById(string id);
+        List<Vehicle> GetAvailableVehicles();
     }
 }

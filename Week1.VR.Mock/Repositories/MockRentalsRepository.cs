@@ -22,12 +22,51 @@ namespace Week1.VR.Mock.Repositories
 
         public List<Rental> GetAll()
         {
-            throw new NotImplementedException();
+            return InMemoryStorage.Rentals;
+
         }
 
         public Rental GetById(int id)
         {
+            foreach (var item in InMemoryStorage.Rentals)
+            {
+                if (item.RentalId == id)
+                {
+                    return item;    
+                }
+            }
+            return null;
+        }
+
+        public List<Rental> GetByUser(string userId)
+        {
             throw new NotImplementedException();
+        }
+
+        public List<Rental> GetByVehicle(string vehicleId)
+        {
+            List<Rental> sublist = new List<Rental> ();
+            foreach (var item in InMemoryStorage.Rentals)
+            {
+                if (item.VehiclePlate == vehicleId)
+                {
+                    sublist.Add(item);  
+                }
+            }
+            return sublist; 
+        }
+
+        public List<Rental> GetRentalsInProgress()
+        {
+            List<Rental> sublist = new List<Rental>();
+            foreach (var item in InMemoryStorage.Rentals)
+            {
+                if ((DateTime.Today - TimeSpan.FromDays(item.Duration) <= item.StartingDate) && (item.StartingDate <= DateTime.Today)) 
+                {
+                    sublist.Add(item);
+                }
+            }
+            return sublist;
         }
 
         public bool Update(Rental entity)

@@ -26,9 +26,16 @@ namespace Week1.VR.Mock.Repositories
             throw new NotImplementedException();
         }
 
-        public Customer GetById(int id)
+        public Customer GetById(string id)
         {
-            throw new NotImplementedException();
+            foreach (var item in InMemoryStorage.Customers)
+            {
+                if (item.FiscalCode == id)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         public bool Update(Customer entity)

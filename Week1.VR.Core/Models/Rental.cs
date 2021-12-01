@@ -17,7 +17,10 @@ namespace Week1.VR.Core.Models
         public string CustomerFC { get; set; }
         public string VehiclePlate { get; set; }
 
-
+        public override string ToString()
+        {
+            return $"ID Noleggio: {RentalId} - Data di inizio: {StartingDate.ToShortDateString()} - Giorni: {Duration} - Ammontare totale: {TotalCost} euro";
+        }
 
     }
 }

@@ -9,5 +9,10 @@ namespace Week1.VR.Core.Models
     public class Van : Vehicle
     {
         public int LoadCapacity { get; set; }
+
+        public override string ToString()
+        {
+            return base.ToString()+ $" - Carico: {LoadCapacity} kg";
+        }
     }
 }

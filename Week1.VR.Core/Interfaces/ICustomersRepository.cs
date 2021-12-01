@@ -9,5 +9,7 @@ namespace Week1.VR.Core.Interfaces
 {
     public interface ICustomersRepository : IRepository<Customer>
     {
+        Customer GetById(string id);
+
     }
 }

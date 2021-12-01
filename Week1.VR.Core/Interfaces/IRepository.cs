@@ -9,7 +9,7 @@ namespace Week1.VR.Core.Interfaces
     public interface IRepository<T>
     {
         List<T> GetAll();
-        T GetById(int id);
+        //T GetById(int id);
         bool Add(T entity);
         bool Update(T entity);
         bool Delete(T entity);

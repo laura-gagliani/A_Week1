@@ -16,8 +16,210 @@ namespace Week1.VR.Client
 
         internal static void Start()
         {
+            //All'accesso, l'utente può:
+            //1 Visualizzare tutti i noleggi, con i dati del veicolo e del cliente ( -> andando a ripescare le relative entità)
+            //2 Visualizzare i noleggi di un certo veicolo (input: targa)
+            //3 Visualizzare i dettagli di un certo noleggio (input: id)
+            //4 Visualizzare i noleggi attivi
+            //5 Inserire un nuovo noleggio verificando che il veicolo non sia impegnato. (contemplare il caso che il cliente sia nuovo...)
+            //Il costo del noleggio si calcola moltiplicando la tariffa per il numero
+            //di giorni.
+            //6 Data una targa, calcolare il totale in euro dei noleggi
+            //7 Ricavare il totale in euro dei noleggi di automobili
+
+            bool quit = false;
+            Console.WriteLine("Benvenuto!");
+
+            do
+            {
+                Console.WriteLine("\n[1] Visualizza tutti i noleggi");
+                Console.WriteLine("[2] Visualizza noleggi per veicolo");
+                Console.WriteLine("[3] Visualizza dettagli noleggio");
+                Console.WriteLine("[4] Visualizza noleggi attivi");
+                Console.WriteLine("[5] Inserisci nuovo noleggio");
+                Console.WriteLine("[6] Visualizza ammontare noleggi per targa");
+                Console.WriteLine("[7] Visualizza ammontare totale");
+                Console.WriteLine("[Q] Esci");
+
+                char choice = Console.ReadKey().KeyChar;
+
+                switch (choice)
+                {
+                    case '1':
+                        VisualizzaNoleggi();
+                        break;
+                    case '2':
+                        VisualizzaNoleggiPerVeicolo();
+                        break;
+                    case '3':
+                        VisualizzaDettagliNoleggio();
+                        break;
+                    case '4':
+                        VisualizzaNoleggiAttivi();
+                        break;
+                    case '5':
+                        InserisciNuovoNoleggio();
+                        break;
+                    case '6':
+                        break;
+                    case '7':
+                        break;
+                    case 'Q':
+                        quit = true;
+                        Console.WriteLine("\nChiusura in corso...");
+                        break;
+                    default:
+                        Console.WriteLine("\nScelta errata dal menu!");
+                        break;
+                }
+
+            } while (!quit);
+        }
+
+        private static void InserisciNuovoNoleggio()
+        {
+            Console.WriteLine("\n--- Noleggio Veicolo ---");
+            Console.WriteLine("\nI veicoli in elenco sono:");
+
+            List<Vehicle> veicoliDisponibili = bl.GetAvailableVehicles();
+            
+            
+            //utente nuovo / utente già in elenco
+            //check veicolo non impegnato
+        }
+
+        private static void VisualizzaNoleggiAttivi()
+        {
+            List<Rental> noleggiAttivi = bl.GetRentalsInProgress();
+
+            if (noleggiAttivi.Count != 0)
+            {
+                Console.WriteLine();
+                foreach (var item in noleggiAttivi)
+                {
+                    Console.WriteLine(item);
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nNessun noleggio ancora in corso!");
+            }
+            
 
 
+        }
+
+        private static void VisualizzaDettagliNoleggio()
+        {
+            Console.WriteLine("\nInserisci Id del noleggio cercato:");
+            int id = GetInt();
+            Rental noleggio = bl.GetRentalById(id);
+
+            if (noleggio == null)
+            {
+                Console.WriteLine("\nNessun noleggio registrato con questo id!");
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine(noleggio);
+                Customer c = bl.GetCustomerById(noleggio.CustomerFC);
+                Vehicle v = bl.GEtVehicleById(noleggio.VehiclePlate);
+
+                if (c != null)
+                {
+                    Console.WriteLine("Dati cliente: " + c);
+                }
+                else Console.WriteLine($"Noleggio registrato con codice utente {noleggio.CustomerFC} - Nessun utente in elenco con questo codice");
+
+                if (v != null)
+                {
+                    Console.WriteLine("Veicolo noleggiato: " + v);
+                }
+                else Console.WriteLine($"Noleggio registrato con targa {noleggio.VehiclePlate} - Nessun veicolo in elenco con questa targa");
+
+            }
+        }
+
+        private static int GetInt()
+        {
+            int num;
+            bool parse;
+
+            do
+            {
+                parse = int.TryParse(Console.ReadLine(), out num);
+            } while (!parse);
+            return num;
+        }
+
+        private static void VisualizzaNoleggiPerVeicolo()
+        {
+            Console.WriteLine("\nLe targhe in elenco sono:");
+            List<Vehicle> targhe = bl.GetAllVehicles();
+            foreach (Vehicle vehicle in targhe)
+            {
+                Console.WriteLine(vehicle.Plate);
+            }
+            Console.WriteLine("\nDigita la targa del veicolo di cui vuoi visualizzare i noleggi:");
+            string targa = Console.ReadLine();  
+
+            Vehicle v = bl.GEtVehicleById(targa);
+            if (v == null)
+                Console.WriteLine("\nErrore! Nessun veicolo in elenco con questa targa");
+
+            else
+            {
+                List<Rental> noleggiVeicolo = bl.GetRentalsByPlate(v.Plate);
+                if (noleggiVeicolo.Count != 0)
+                {
+                    Console.WriteLine();
+                    foreach (var item in noleggiVeicolo)
+                    {
+                        Customer c = bl.GetCustomerById(item.CustomerFC);
+                        Console.WriteLine(item);
+
+                        if (c != null)
+                        {
+                            Console.WriteLine("Dati cliente: " + c);
+                        }
+                        else Console.WriteLine($"Noleggio registrato con codice utente {item.CustomerFC} - Nessun utente in elenco con questo codice");
+
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\nQuesto veicolo non è mai stato noleggiato");
+                }
+                
+            }
+        }
+
+        private static void VisualizzaNoleggi()
+        {
+            List<Rental> noleggi = bl.GetAllRentals();
+            foreach (var item in noleggi)
+            {
+                Customer c = bl.GetCustomerById(item.CustomerFC);
+                Vehicle v = bl.GEtVehicleById(item.VehiclePlate);
+
+                Console.WriteLine(item);
+
+                if (c != null)
+                {
+                    Console.WriteLine("Dati cliente: "+c);
+                }
+                else Console.WriteLine($"Noleggio registrato con codice utente {item.CustomerFC} - Nessun utente in elenco con questo codice");
+
+                if (v != null)
+                {
+                    Console.WriteLine("Veicolo noleggiato: "+v);
+                }
+                else Console.WriteLine($"Noleggio registrato con targa {item.VehiclePlate} - Nessun veicolo in elenco con questa targa");
+
+                Console.WriteLine();
+            }
         }
     }
 }

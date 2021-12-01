@@ -24,12 +24,12 @@ namespace Week1.VR.Mock.Repositories
 
         public static List<Rental> Rentals = new()
         {
-            new Rental() { RentalId = 1, VehiclePlate = "AX743HJ", CustomerFC = "NREFBA76A01L219J", StartingDate = new DateTime(2021, 11, 29), Duration = 5, TotalCost = 275}, 
+            new Rental() { RentalId = 1, VehiclePlate = "AX743HJ", CustomerFC = "RSSMRA76A01L219J", StartingDate = new DateTime(2021, 11, 29), Duration = 5, TotalCost = 275}, 
             new Rental() { RentalId = 2, VehiclePlate = "GJ924LR", CustomerFC = "NREFBA76A01L219J", StartingDate = new DateTime(2021, 12, 3), Duration = 2, TotalCost = 120}, 
-            new Rental() { RentalId = 3, VehiclePlate = "UY248QW", CustomerFC = "NREFBA76A01L219J", StartingDate = new DateTime(2020, 6, 7), Duration = 1, TotalCost = 65}, 
-            new Rental() { RentalId = 4, VehiclePlate = "AX743HJ", CustomerFC = "RSSMRA80A01L219M", StartingDate = new DateTime(2021, 10, 20), Duration = 1, TotalCost = 70}, 
+            new Rental() { RentalId = 3, VehiclePlate = "UY248QW", CustomerFC = "RSSMRC80A01L219M", StartingDate = new DateTime(2020, 6, 7), Duration = 1, TotalCost = 65}, 
+            new Rental() { RentalId = 4, VehiclePlate = "AX743HJ", CustomerFC = "RSSMRC80A01L219M", StartingDate = new DateTime(2021, 10, 20), Duration = 1, TotalCost = 70}, 
             new Rental() { RentalId = 5, VehiclePlate = "TY467WE", CustomerFC = "RSSMRA80A01L219M", StartingDate = new DateTime(2021, 11, 29), Duration = 5, TotalCost = 625}, 
-            new Rental() { RentalId = 6, VehiclePlate = "GH567KU", CustomerFC = "RSSMRA80A01L219M", StartingDate = new DateTime(2020, 4, 19), Duration = 3, TotalCost = 600}, 
+            new Rental() { RentalId = 6, VehiclePlate = "GH567KU", CustomerFC = "RSSMRA76A01L219J", StartingDate = new DateTime(2020, 4, 19), Duration = 3, TotalCost = 600}, 
         };
 
         //Clienti

@@ -9,5 +9,10 @@ namespace Week1.VR.Core.Models
     public class Car : Vehicle
     {
         public int Seats { get; set; }
+
+        public override string ToString()
+        {
+            return base.ToString()+ $" - Posti: {Seats}";
+        }
     }
 }

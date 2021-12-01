@@ -22,12 +22,29 @@ namespace Week1.VR.Mock.Repositories
 
         public List<Vehicle> GetAll()
         {
-            throw new NotImplementedException();
+            return InMemoryStorage.Vehicles;
         }
 
-        public Vehicle GetById(int id)
+        public List<Vehicle> GetAvailableVehicles()
         {
-            throw new NotImplementedException();
+            List<Vehicle> vehicles = InMemoryStorage.Vehicles;
+
+            foreach (var item in InMemoryStorage.Vehicles)
+            {
+
+            }
+        }
+
+        public Vehicle GetById(string id)
+        {
+            foreach (var item in InMemoryStorage.Vehicles)
+            {
+                if (item.Plate == id)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         public bool Update(Vehicle entity)

@@ -18,5 +18,10 @@ namespace Week1.VR.Core.Models
 
         //per gestire l'ereditarietà si poteva anche mettere una proprietà "tipo" che distingue tra car e van con un enum
         // a imitazione della struttura db. se faccio così (tabella unica) i campi specifici di car/van saranno nullable (non obbligatori) (e dovrebbero essere nullabili anche qui in teoria)
+
+        public override string ToString()
+        {
+            return $"Targa: {Plate} - Modello: {Model} - Tariffa giornaliera: {DailyRate} euro"  ;
+        }
     }
 }
