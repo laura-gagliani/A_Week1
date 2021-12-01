@@ -48,15 +48,12 @@ namespace Week1.Agenzia.Client
                     case '5':
                         InserisciNuovoImmobile();
                         break;
-
                     case '6':
                         EliminaImmobile();
                         break;
-
                     case '7':
                         CambiaDisponibilita();
                         break;
-
                     case 'Q':
                         quit = true;
                         Console.WriteLine("\nChiusura in corso...");
