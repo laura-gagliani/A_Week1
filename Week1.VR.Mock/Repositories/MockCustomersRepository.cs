@@ -13,7 +13,7 @@ namespace Week1.VR.Mock.Repositories
         public bool Add(Customer entity)
         {
             
-            throw new NotImplementedException();
+            InMemoryStorage.Customers.Add(entity);
         }
 
         public bool Delete(Customer entity)
@@ -23,7 +23,7 @@ namespace Week1.VR.Mock.Repositories
 
         public List<Customer> GetAll()
         {
-            throw new NotImplementedException();
+            return InMemoryStorage.Customers;
         }
 
         public Customer GetById(string id)

@@ -38,7 +38,7 @@ namespace Week1.VR.Client
                 Console.WriteLine("[4] Visualizza noleggi attivi");
                 Console.WriteLine("[5] Inserisci nuovo noleggio");
                 Console.WriteLine("[6] Visualizza ammontare noleggi per targa");
-                Console.WriteLine("[7] Visualizza ammontare totale");
+                Console.WriteLine("[7] Visualizza ammontare per tutte le automobili");
                 Console.WriteLine("[Q] Esci");
 
                 char choice = Console.ReadKey().KeyChar;
@@ -61,8 +61,10 @@ namespace Week1.VR.Client
                         InserisciNuovoNoleggio();
                         break;
                     case '6':
+                        VisualizzaAmmontarePerTarga();
                         break;
                     case '7':
+                        VisualizzaAmmontareAutomobili();
                         break;
                     case 'Q':
                         quit = true;
@@ -76,16 +78,126 @@ namespace Week1.VR.Client
             } while (!quit);
         }
 
+        private static void VisualizzaAmmontarePerTarga()
+        {
+            List<Vehicle> vehicles = bl.GetAllVehicles();
+            foreach (Vehicle vehicle in vehicles)
+            {
+                Console.WriteLine(vehicle.Plate);
+            }
+
+            Console.WriteLine("\nInserisci la targa da selezionare:");
+            string targa = Console.ReadLine();
+            Vehicle foundVehicle = bl.GetVehicleById(targa);
+            if (foundVehicle == null)
+            {
+                Console.WriteLine("\nInserimento scorretto");
+            }
+            else
+            {                
+                decimal ammontarePerTarga = bl.CalculateAmountPerPlate(foundVehicle.Plate);
+                Console.WriteLine($"Il totale per la targa {foundVehicle.Plate} è di {ammontarePerTarga}");
+            }
+        }
+
+        private static void VisualizzaAmmontareAutomobili()
+        {
+            decimal ammontareAutomobili = bl.CalculateTotalCarsAmount();                
+
+            Console.WriteLine($"L'ammontare totale per tutti i noleggi delle automobili in elenco è di {ammontareAutomobili} euro");
+        }
+
         private static void InserisciNuovoNoleggio()
         {
             Console.WriteLine("\n--- Noleggio Veicolo ---");
-            Console.WriteLine("\nI veicoli in elenco sono:");
+            Console.WriteLine("\nI veicoli disponibili sono:");
 
             List<Vehicle> veicoliDisponibili = bl.GetAvailableVehicles();
+            foreach (var item in veicoliDisponibili)
+            {
+                Console.WriteLine(item);
+            }
+
+            bool targaCorretta = false;
+            string targaNoleggiata;
+            do
+            {
+                Console.WriteLine("\nInserisci la targa del veicolo selezionato:");
+                targaNoleggiata = Console.ReadLine();
+                foreach (var item in veicoliDisponibili)
+                {
+                    if (item.Plate == targaNoleggiata)
+                    {
+                        targaCorretta = true;
+                    }
+                }
+            } while (!targaCorretta);
+            Console.WriteLine("\nVeicolo correttamente selezionato");
+
+            Console.WriteLine("\nI clienti già in elenco sono:");
+            List<Customer> customers = bl.GetAllCustomers();
+            foreach (var customer in customers)
+            {
+                Console.WriteLine(customer);
+            }
+
+            string codiceFiscale;
+            Console.WriteLine("\nPremi 1 per selezionare uno dei clienti già in elenco, premi 2 per inserire un nuovo cliente");
+                        int choice;
+            do
+            {
+                choice = GetInt();
+            }while(!(choice == 1 || choice == 2));
             
+            if (choice == 1)
+            {
+                bool clienteCorretto = false;
+                do
+                {
+                    Console.WriteLine("\nInserisci il codice fiscale del cliente:");
+                    codiceFiscale = Console.ReadLine();
+                    foreach (var item in customers)
+                    {
+                        if (item.FiscalCode == codiceFiscale)
+                        {
+                            clienteCorretto = true;
+                        }
+                    }
+                } while (!clienteCorretto);
+                Console.WriteLine("\nCliente correttamente selezionato");
+            }
+            else
+            {
+                Customer newCustomer = new Customer();
+                Console.WriteLine("\nInserisci nome:");
+                newCustomer.Name = Console.ReadLine();
+                Console.WriteLine("Inserisci cognome:");
+                newCustomer.Surname = Console.ReadLine();
+                Console.WriteLine("Inserisci codice fiscale:");
+                newCustomer.FiscalCode = Console.ReadLine();
+                bl.AddNewCustomer(newCustomer);
+                codiceFiscale = newCustomer.FiscalCode;
+            }
             
-            //utente nuovo / utente già in elenco
-            //check veicolo non impegnato
+
+            Rental nuovoNoleggio = InserimentoDatiNoleggio(codiceFiscale, targaNoleggiata);
+            bl.AddNewRental(nuovoNoleggio);
+        }
+
+        private static Rental InserimentoDatiNoleggio(string? codiceFiscale, string targaNoleggiata)
+        {
+            Rental r = new Rental();
+            r.VehiclePlate = targaNoleggiata;
+            r.CustomerFC = codiceFiscale;
+            Console.WriteLine("\nInserisci data di inizio noleggio:");
+            r.StartingDate = DateTime.Parse(Console.ReadLine()); //TODO tryparse
+            Console.WriteLine("\nInserisci durata (giorni) del noleggio:");
+            r.Duration = GetInt();
+            Vehicle v = bl.GetVehicleById(targaNoleggiata);
+            r.TotalCost = v.DailyRate * r.Duration;
+            //ha tutto tranne l'id
+            return r;
+
         }
 
         private static void VisualizzaNoleggiAttivi()
@@ -104,7 +216,7 @@ namespace Week1.VR.Client
             {
                 Console.WriteLine("\nNessun noleggio ancora in corso!");
             }
-            
+
 
 
         }
@@ -124,7 +236,7 @@ namespace Week1.VR.Client
                 Console.WriteLine();
                 Console.WriteLine(noleggio);
                 Customer c = bl.GetCustomerById(noleggio.CustomerFC);
-                Vehicle v = bl.GEtVehicleById(noleggio.VehiclePlate);
+                Vehicle v = bl.GetVehicleById(noleggio.VehiclePlate);
 
                 if (c != null)
                 {
@@ -162,9 +274,9 @@ namespace Week1.VR.Client
                 Console.WriteLine(vehicle.Plate);
             }
             Console.WriteLine("\nDigita la targa del veicolo di cui vuoi visualizzare i noleggi:");
-            string targa = Console.ReadLine();  
+            string targa = Console.ReadLine();
 
-            Vehicle v = bl.GEtVehicleById(targa);
+            Vehicle v = bl.GetVehicleById(targa);
             if (v == null)
                 Console.WriteLine("\nErrore! Nessun veicolo in elenco con questa targa");
 
@@ -192,7 +304,7 @@ namespace Week1.VR.Client
                 {
                     Console.WriteLine("\nQuesto veicolo non è mai stato noleggiato");
                 }
-                
+
             }
         }
 
@@ -202,19 +314,19 @@ namespace Week1.VR.Client
             foreach (var item in noleggi)
             {
                 Customer c = bl.GetCustomerById(item.CustomerFC);
-                Vehicle v = bl.GEtVehicleById(item.VehiclePlate);
+                Vehicle v = bl.GetVehicleById(item.VehiclePlate);
 
                 Console.WriteLine(item);
 
                 if (c != null)
                 {
-                    Console.WriteLine("Dati cliente: "+c);
+                    Console.WriteLine("Dati cliente: " + c);
                 }
                 else Console.WriteLine($"Noleggio registrato con codice utente {item.CustomerFC} - Nessun utente in elenco con questo codice");
 
                 if (v != null)
                 {
-                    Console.WriteLine("Veicolo noleggiato: "+v);
+                    Console.WriteLine("Veicolo noleggiato: " + v);
                 }
                 else Console.WriteLine($"Noleggio registrato con targa {item.VehiclePlate} - Nessun veicolo in elenco con questa targa");
 

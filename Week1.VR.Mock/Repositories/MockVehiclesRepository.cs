@@ -27,12 +27,27 @@ namespace Week1.VR.Mock.Repositories
 
         public List<Vehicle> GetAvailableVehicles()
         {
-            List<Vehicle> vehicles = InMemoryStorage.Vehicles;
+            List<Vehicle> availableVehicles = new List<Vehicle>();  
+            bool isAvailable;
 
-            foreach (var item in InMemoryStorage.Vehicles)
+
+            foreach (Vehicle v in InMemoryStorage.Vehicles)
             {
+                isAvailable = true;
 
+                foreach (Rental r in InMemoryStorage.Rentals)
+                {
+                    if ((DateTime.Today - TimeSpan.FromDays(r.Duration) <= r.StartingDate) && (r.StartingDate <= DateTime.Today) && v.Plate == r.VehiclePlate)
+                    {   //se il rental è attivo e la targa del rental attivo coincide con il veicolo considerato -> allora il veicolo non è disponibile
+                        isAvailable = false;
+                    }
+                }
+                if (isAvailable)
+                {
+                    availableVehicles.Add(v);
+                }
             }
+            return availableVehicles;
         }
 
         public Vehicle GetById(string id)

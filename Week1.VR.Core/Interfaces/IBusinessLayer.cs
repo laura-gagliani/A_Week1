@@ -11,11 +11,16 @@ namespace Week1.VR.Core.Interfaces
     {
         List<Rental> GetAllRentals();
         Customer GetCustomerById(string customerFC);
-        Vehicle GEtVehicleById(string vehiclePlate);
+        Vehicle GetVehicleById(string vehiclePlate);
         List<Rental> GetRentalsByPlate(string plate);
         List<Vehicle> GetAllVehicles();
         Rental GetRentalById(int id);
         List<Rental> GetRentalsInProgress();
         List<Vehicle> GetAvailableVehicles();
+        List<Customer> GetAllCustomers();
+        void AddNewRental(Rental nuovoNoleggio);
+        decimal CalculateTotalCarsAmount();
+        decimal CalculateAmountPerPlate(string plate);
+        void AddNewCustomer(Customer newCustomer);
     }
 }

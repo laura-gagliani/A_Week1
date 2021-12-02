@@ -12,7 +12,25 @@ namespace Week1.VR.Mock.Repositories
     {
         public bool Add(Rental entity)
         {
-            throw new NotImplementedException();
+            //generate id
+            int newId;
+            int numberOfRentals = InMemoryStorage.Rentals.Count;
+
+            if (numberOfRentals == 0)
+            {
+                newId = 1;
+            }
+            else
+            {
+                newId = InMemoryStorage.Rentals[numberOfRentals - 1].RentalId +1;
+
+            }
+            //assign id
+            entity.RentalId = newId;
+
+            //add to list
+            InMemoryStorage.Rentals.Add(entity);    
+            return true;
         }
 
         public bool Delete(Rental entity)

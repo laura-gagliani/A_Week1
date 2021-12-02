@@ -8,7 +8,7 @@ using Week1.VR.Core.Models;
 
 namespace Week1.VR.Core.BusinessLayer
 {
-    public class VRBusinessLayer :IBusinessLayer
+    public class VRBusinessLayer : IBusinessLayer
     {
         private readonly ICustomersRepository _customersRepository;
         private readonly IVehiclesRepository _vehiclesRepository;
@@ -21,6 +21,50 @@ namespace Week1.VR.Core.BusinessLayer
             _customersRepository = customersRepo;
             _vehiclesRepository = vehiclesRepo;
             _rentalsRepository = rentalsRepo;
+        }
+
+        public void AddNewCustomer(Customer newCustomer)
+        {
+            _customersRepository.Add(newCustomer);
+        }
+
+        public void AddNewRental(Rental nuovoNoleggio)
+        {
+           
+            _rentalsRepository.Add(nuovoNoleggio);
+        }
+
+        public decimal CalculateAmountPerPlate(string plate)
+        {
+            decimal ammontarePerTarga = 0;
+            List<Rental> rentalsByPlate = GetRentalsByPlate(plate);
+            Vehicle v = GetVehicleById(plate);
+            foreach (var item in rentalsByPlate)
+            {
+                ammontarePerTarga += item.Duration * v.DailyRate;
+            }
+            return ammontarePerTarga;
+        }
+
+        public decimal CalculateTotalCarsAmount()
+        {
+            decimal tot = 0;
+            List<Rental> rentals = GetAllRentals();
+            foreach (Rental r in rentals)
+            {
+                Vehicle v = GetVehicleById(r.VehiclePlate);
+                if(v is Car)
+                {
+                    tot += r.Duration * v.DailyRate;
+
+                }
+            }
+            return tot;
+        }
+
+        public List<Customer> GetAllCustomers()
+        {
+            return _customersRepository.GetAll();
         }
 
         public List<Rental> GetAllRentals()
@@ -59,7 +103,7 @@ namespace Week1.VR.Core.BusinessLayer
             return _rentalsRepository.GetRentalsInProgress();
         }
 
-        public Vehicle GEtVehicleById(string vehiclePlate)
+        public Vehicle GetVehicleById(string vehiclePlate)
         {
             return _vehiclesRepository.GetById(vehiclePlate);
         }
