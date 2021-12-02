@@ -23,55 +23,72 @@ namespace Week1.Agenzia.Core.BusinessLayer
 
 
 
-        internal List<Immobile> GetAllImmobili()
+        internal IEnumerable<Immobile> GetAllImmobili()
         {
-            return mockImmobiliRepo.GetAll();
+            //return mockImmobiliRepo.GetAll();
+
+            return mockImmobiliRepo.GetUsingLinqWhere();
         }
 
-        internal List<Immobile> GetAllBySuperfMin(int min)
+        internal IEnumerable<Immobile> GetAllBySuperfMin(int min)
         {
-            return mockImmobiliRepo.GetByMinArea(min);
+            //return mockImmobiliRepo.GetByMinArea(min);
+
+            return mockImmobiliRepo.GetUsingLinqWhere(imm => imm.SuperficieMQ >= min);
         }
 
-        internal List<Immobile> GetAvailable()
+        internal IEnumerable<Immobile> GetAvailable()
         {
 
-            return mockImmobiliRepo.GetAllAvailable();
+            //return mockImmobiliRepo.GetAllAvailable();
+
+            return mockImmobiliRepo.GetUsingLinqWhere(imm => imm.Disponibilita);
+
+
         }
 
 
-        internal List<Immobile> GetByCategory(char choice)
+        internal IEnumerable<Immobile> GetByCategory(char choice)
         {
-            return mockImmobiliRepo.GetByCategory(choice);
+            //return mockImmobiliRepo.GetByCategory(choice);
+
+            if (choice == 'a')
+                return mockImmobiliRepo.GetUsingLinqWhere(im => im is Box);
+
+            else if (choice == 'b')
+                return mockImmobiliRepo.GetUsingLinqWhere(im => im is Appartamento && im is not Villa);
+
+            else
+                return mockImmobiliRepo.GetUsingLinqWhere(im => im is Villa);
+
+
+
         }
 
         internal void AddNewImmobile(Immobile nuovoImmobile)
         {
-            nuovoImmobile.Id = GenerateId();
-            mockImmobiliRepo.Add(nuovoImmobile);
+            mockImmobiliRepo.Add(nuovoImmobile);  
+
+
         }
 
-        private int GenerateId()
-        {
-            int numeroImmobili = InMemoryStorage.Immobili.Count;
-            int ultimoId = InMemoryStorage.Immobili[numeroImmobili - 1].Id;
+      
 
-            return ultimoId + 1;
-        }
-
-        
 
         internal Immobile GetById(int id)
         {
-            List<Immobile> immobili = GetAllImmobili();
-            foreach (var item in immobili)
-            {
-                if (item.Id == id)
-                {
-                    return item;
-                }
-            }
-            return null;
+            //List<Immobile> immobili = GetAllImmobili().ToList();
+            //foreach (var item in immobili)
+            //{
+            //    if (item.Id == id)
+            //    {
+            //        return item;
+            //    }
+            //}
+            //return null;
+
+            return mockImmobiliRepo.GetUsingLinqWhere(im => im.Id == id).SingleOrDefault();
+            
         }
 
         internal void DeleteImmobile(Immobile im)

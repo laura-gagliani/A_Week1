@@ -190,7 +190,7 @@ namespace Week1.Agenzia.Client
             Console.WriteLine("[c] Ville");
 
             char choice = Console.ReadKey().KeyChar;
-            List<Immobile> lista = null;
+            IEnumerable<Immobile> lista = null;
             switch (choice)
             {
                 case 'a':
@@ -221,12 +221,13 @@ namespace Week1.Agenzia.Client
 
         private static void FiltraPerDisponibilita()
         {
-            List<Immobile> immobiliDisponibili = bl.GetAvailable();
+            IEnumerable<Immobile> immobiliDisponibili = bl.GetAvailable();
             Console.WriteLine("\nGli immobili disponibili sono:");
             foreach (Immobile imm in immobiliDisponibili)
             {
                 Console.WriteLine(imm);
             }
+            
         }
 
         private static void FiltraPerSuperficieMinima()
@@ -234,7 +235,7 @@ namespace Week1.Agenzia.Client
             Console.WriteLine("\nInserisci la superficie minima che devono avere gli immobili da visualizzare:");
             int min = GetInt();
 
-            List<Immobile> immobiliSuperfMin = bl.GetAllBySuperfMin(min);
+            List<Immobile> immobiliSuperfMin = bl.GetAllBySuperfMin(min).ToList();
             Console.WriteLine("\nGli immobili selezionati sono:");
             foreach (Immobile immobile in immobiliSuperfMin)
             {
@@ -256,7 +257,7 @@ namespace Week1.Agenzia.Client
 
         private static void GetAllImmobili()
         {
-            List<Immobile> immobili = bl.GetAllImmobili();
+            List<Immobile> immobili = bl.GetAllImmobili().ToList();
             Console.WriteLine("\nGli immobili sono:");
             foreach (Immobile immobile in immobili)
             {
