@@ -46,7 +46,7 @@ namespace Week1.VR.Core.BusinessLayer
             return ammontarePerTarga;
         }
 
-        public decimal CalculateTotalCarsAmount()
+        public decimal CalculateAmountForAllCars()
         {
             decimal tot = 0;
             List<Rental> rentals = GetAllRentals();

@@ -38,7 +38,8 @@ namespace Week1.VR.Client
                 Console.WriteLine("[4] Visualizza noleggi attivi");
                 Console.WriteLine("[5] Inserisci nuovo noleggio");
                 Console.WriteLine("[6] Visualizza ammontare noleggi per targa");
-                Console.WriteLine("[7] Visualizza ammontare per tutte le automobili");
+                Console.WriteLine("[7] Visualizza ammontare noleggi per tutte le automobili");
+                Console.WriteLine("[8] Aggiungi nuovo veicolo");
                 Console.WriteLine("[Q] Esci");
 
                 char choice = Console.ReadKey().KeyChar;
@@ -58,13 +59,16 @@ namespace Week1.VR.Client
                         VisualizzaNoleggiAttivi();
                         break;
                     case '5':
-                        InserisciNuovoNoleggio();
+                        InserisciNuovoNoleggio(); //TODO: correggi la questione del periodo di disponibilità
                         break;
                     case '6':
                         VisualizzaAmmontarePerTarga();
                         break;
                     case '7':
                         VisualizzaAmmontareAutomobili();
+                        break;
+                    case '8':
+                        InserisciNuovoVeicolo();
                         break;
                     case 'Q':
                         quit = true;
@@ -76,6 +80,33 @@ namespace Week1.VR.Client
                 }
 
             } while (!quit);
+        }
+
+        private static void InserisciNuovoVeicolo()
+        {
+            //Console.WriteLine("Premi 1 per inserire un'auto, premi 2 per inserire un furgoncino");
+            //int choice;
+            //do
+            //{
+            //    choice = GetInt();
+            //} while (choice != 1 && choice != 2);
+
+            //Console.Write("\nTarga:");
+            //string targa = Console.ReadLine();
+            //Console.Write("Modello:");
+            //string modello = Console.ReadLine();
+            //Console.Write("\nCosto giornaliero:");
+            //decimal costoGiornaliero = decimal.Parse(Console.ReadLine()); //TODO tryparse
+
+            //if (choice == 1)
+            //{
+            //    Console.Write("\nPosti:");
+            //    int posti = GetInt();
+            //}
+            //else
+            //{
+
+            //}
         }
 
         private static void VisualizzaAmmontarePerTarga()
@@ -102,7 +133,7 @@ namespace Week1.VR.Client
 
         private static void VisualizzaAmmontareAutomobili()
         {
-            decimal ammontareAutomobili = bl.CalculateTotalCarsAmount();                
+            decimal ammontareAutomobili = bl.CalculateAmountForAllCars();                
 
             Console.WriteLine($"L'ammontare totale per tutti i noleggi delle automobili in elenco è di {ammontareAutomobili} euro");
         }

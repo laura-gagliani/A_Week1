@@ -19,7 +19,7 @@ namespace Week1.VR.Core.Interfaces
         List<Vehicle> GetAvailableVehicles();
         List<Customer> GetAllCustomers();
         void AddNewRental(Rental nuovoNoleggio);
-        decimal CalculateTotalCarsAmount();
+        decimal CalculateAmountForAllCars();
         decimal CalculateAmountPerPlate(string plate);
         void AddNewCustomer(Customer newCustomer);
     }

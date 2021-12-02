@@ -22,7 +22,15 @@ namespace Week1.VR.Mock.Repositories
             }
             else
             {
-                newId = InMemoryStorage.Rentals[numberOfRentals - 1].RentalId +1;
+                int max = 0;
+                foreach (var item in InMemoryStorage.Rentals)
+                {
+                    if(item.RentalId > max)
+                    {
+                        max = item.RentalId;
+                    }
+                }
+                newId = max +1;
 
             }
             //assign id
